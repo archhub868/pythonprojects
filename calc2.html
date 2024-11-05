@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .calculator {
+            max-width: 500px;
+            margin: auto;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        .display {
+            height: 60px;
+            font-size: 30px;
+            text-align: right;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+            overflow: hidden;
+        }
+        .btn-number, .btn-operation, .btn-clear, .btn-equals {
+            width: 65px;
+            height: 65px;
+            font-size: 24px;
+            margin: 5px;
+        }
+        .btn-clear {
+            background-color: #f28b82;
+            color: white;
+        }
+        .btn-equals {
+            background-color: #34a853;
+            color: white;
+        }
+        .btn-operation {
+            background-color: #fbbc04;
+            color: white;
+        }
+
+        body {
+          background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h3 class="text-center mb-3"> Arithmetic Magic</h3>
+        <div class="calculator card p-9 shadow">
+            <div id="display" class="display">0</div>
+            <div class="row">
+                <!-- Number Buttons -->
+                <div class="col-9">
+                    <button class="btn btn-secondary btn-number" onclick="appendNumber('7')">7</button>
+                    <button class="btn btn-secondary btn-number" onclick="appendNumber('8')">8</button>
+                    <button class="btn btn-secondary btn-number" onclick="appendNumber('9')">9</button><br>
+                    <button class="btn btn-secondary btn-number" onclick="appendNumber('4')">4</button>
+                    <button class="btn btn-secondary btn-number" onclick="appendNumber('5')">5</button>
+                    <button class="btn btn-secondary btn-number" onclick="appendNumber('6')">6</button><br>
+                    <button class="btn btn-secondary btn-number" onclick="appendNumber('1')">1</button>
+                    <button class="btn btn-secondary btn-number" onclick="appendNumber('2')">2</button>
+                    <button class="btn btn-secondary btn-number" onclick="appendNumber('3')">3</button><br>
+                    <button class="btn btn-secondary btn-number" onclick="appendNumber('0')">0</button>
+                    <button class="btn btn-clear btn-number" onclick="clearDisplay()">C</button>
+                    <button class="btn btn-equals btn-number" onclick="calculateResult()">=</button>
+                </div>
+
+                <!-- Operation Buttons -->
+                <div class="col-3">
+                    <button class="btn btn-operation" onclick="setOperation('+')">+</button>
+                    <button class="btn btn-operation" onclick="setOperation('-')">-</button>
+                    <button class="btn btn-operation" onclick="setOperation('*')">×</button>
+                    <button class="btn btn-operation" onclick="setOperation('/')">÷</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let display = document.getElementById("display");
+        let currentInput = '0';
+        let firstOperand = null;
+        let operator = null;
+        let shouldResetDisplay = false;
+
+        function updateDisplay() {
+            display.innerText = currentInput;
+        }
+
+        function appendNumber(number) {
+            if (currentInput === '0' || shouldResetDisplay) {
+                currentInput = number;
+                shouldResetDisplay = false;
+            } else {
+                currentInput += number;
+            }
+            updateDisplay();
+        }
+
+        function setOperation(op) {
+            if (operator !== null) calculateResult();
+            firstOperand = parseFloat(currentInput);
+            operator = op;
+            shouldResetDisplay = true;
+        }
+
+        function calculateResult() {
+            if (operator === null || shouldResetDisplay) return;
+
+            let secondOperand = parseFloat(currentInput);
+            let result;
+
+            switch (operator) {
+                case '+':
+                    result = firstOperand + secondOperand;
+                    break;
+                case '-':
+                    result = firstOperand - secondOperand;
+                    break;
+                case '*':
+                    result = firstOperand * secondOperand;
+                    break;
+                case '/':
+                    result = secondOperand === 0 ? 'Give Me A Real Number' : firstOperand / secondOperand;
+                    break;
+            }
+
+            currentInput = result.toString();
+            operator = null;
+            firstOperand = null;
+            shouldResetDisplay = true;
+            updateDisplay();
+        }
+
+        function clearDisplay() {
+            currentInput = '0';
+            firstOperand = null;
+            operator = null;
+            shouldResetDisplay = false;
+            updateDisplay();
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
